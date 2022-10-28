@@ -9,9 +9,11 @@ function SimpleBarChart() {
   const artistName = {};
   const artistCountry = {};
 
-//   for (let i=0; i<artists.length;i++){
-//     if (artists[i])
-//   }
+  for (let i=0; i<artists.length;i++){
+    if (!artists[i].country_mb){
+      
+    }
+  }
 
   return (
     <div className="simpleBarChart">
