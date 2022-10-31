@@ -1,10 +1,10 @@
 import React from 'react';
-import './simpleBarChart.css';
+import './simpleChart.css';
 import data from '../data/first250rows.json';
 import { useEffect, useState , useRef } from 'react';
 import * as d3 from "d3";
 
-function SimpleBarChart() {
+function SimpleChart() {
   const artists = data.artists;
   console.log(artists[0].artist_mb, artists[0].country_mb);
   const artistCountryBandNames = {};
@@ -69,7 +69,6 @@ function SimpleBarChart() {
         const xAxis = d3.axisBottom(xScale)
         const yAxis = d3.axisLeft(yScale)
 
-     //  7] Draw x and y Axes   -------------------------//
       d3.select('#xaxis').remove()
       d3.select(svgRef.current)
         .append('g')
@@ -88,10 +87,10 @@ function SimpleBarChart() {
       d3.select(svgRef.current)
         .append("text")
         .attr("x", (width / 2))             
-        .attr("y", (height / 8))
+        .attr("y", (height / 15))
         .attr("text-anchor", "middle")  
-        .style("font-size", "7px") 
-        .text("Band Count vs Country Line Chart")
+        .style("font-size", "10px") 
+        .text("Music Production across Countries")
         .attr('id','title');
 
       d3.select('#xaxis-label').remove()
@@ -100,7 +99,7 @@ function SimpleBarChart() {
         .attr("text-anchor", "end")
         .attr("x", width/2)
         .attr("y", height+5)
-        .text("Bands from Countries")
+        .text("Countries")
         .attr('id','xaxis-label')
         .style("font-size", "7px") ;
 
@@ -110,10 +109,9 @@ function SimpleBarChart() {
         .attr("text-anchor", "end")
         .attr("x", 10)
         .attr("y", height/2)
-        .text("Band Count")
+        .text("Number of Bands")
         .attr('id','yaxis-label')
-        .style("font-size", "7px") ;
-    
+        .style("font-size", "7px");
 
     },[chartdata]
   )
@@ -122,8 +120,8 @@ function SimpleBarChart() {
   return (
     <div className="simpleBarChart">
       {/* <h3>Line chart here!</h3> */}
-      <svg id="chart" ref={svgRef} viewBox="-30 -10 550 250">
-        <path d="" fill="none" stroke="black" strokeWidth="2" />   
+      <svg id="chart" ref={svgRef} viewBox="-45 -10 550 250">
+        <path d="" fill="none" stroke="black" strokeWidth="1" />   
       </svg>
       <p>
         {/* Chart data - - {JSON.stringify(chartdata)} */}
@@ -135,4 +133,4 @@ function SimpleBarChart() {
   );
 }
 
-export default SimpleBarChart
+export default SimpleChart

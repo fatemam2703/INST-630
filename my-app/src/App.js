@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import React from 'react';
 import './App.css';
-import SimpleBarChart from './components/simpleBarChart';
+import SimpleChart from './components/simpleChart';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
         Music Visualization
       </header>
       <div className="App-body">        
-        <SimpleBarChart />        
+        <SimpleChart />        
       </div>
     </div>
     
