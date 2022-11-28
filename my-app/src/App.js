@@ -2,6 +2,8 @@
 import React from 'react';
 import './App.css';
 import SimpleChart from './components/simpleChart';
+import BarChart from './components/barChart';
+import FloatingImages from './components/floatingImages';
 
 function App() {
   return (
@@ -10,7 +12,9 @@ function App() {
         Music Visualization
       </header>
       <div className="App-body">        
-        <SimpleChart />        
+        <SimpleChart />   
+        <BarChart />
+        {/* <FloatingImages /> */}
       </div>
     </div>
     

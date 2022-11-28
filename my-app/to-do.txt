@@ -1,0 +1,11 @@
+1. Make clickable stack bar chart with types as stacks, bars as countries and height would be total bands
+https://www.youtube.com/watch?v=a4dsWDyfNeA
+
+2. On click, it would get floating pictures of all those bands - size according to the number of listeners
+https://www.williamkurniawan.com/blog/stripe-floating-logo-bubbles-clone-using-react-hooks
+
+3. Make scraper for pictures
+https://serpapi.com/blog/scrape-google-images-with-python/
+
+4. Clicking on floating pic opens Spotify
+https://newsroom.spotify.com/2018-09-04/how-to-embed-spotifys-play-button/
