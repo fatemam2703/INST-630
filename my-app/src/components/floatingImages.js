@@ -1,93 +1,73 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './floatingImages.css';
-import data from '../data/first500rows.json';
-import * as d3 from "d3";
+import data from '../data/first2000rows.json';
 
 function FloatingImages() {
   const artists = data.artists;
   
-  var svg = d3.select("svg"),
-    margin = 20,
-    diameter = +svg.attr("width"),
-    g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+  const artistGenre = {};
 
-  var color = d3.scaleLinear()
-    .domain([-1, 5])
-    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-    .interpolate(d3.interpolateHcl);
+  const imageContainerRef= useRef()
 
-  var pack = d3.pack()
-    .size([diameter - margin, diameter - margin])
-    .padding(2);
-
-  
-
-  d3.json("flare.json", function(error, root) {
-  if (error) throw error;
-
-  root = d3.hierarchy(root)
-      .sum(function(d) { return d.size; })
-      .sort(function(a, b) { return b.value - a.value; });
-
-  var focus = root,
-      nodes = pack(root).descendants(),
-      view;
-
-  
-  var node = g.selectAll("circle,text");
-  
-  function zoom(d) {
-    var focus0 = focus; focus = d;
-
-    var transition = d3.transition()
-        // .duration(d3.event.altKey ? 7500 : 750)
-        .tween("zoom", function(d) {
-          var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
-          return function(t) { zoomTo(i(t)); };
-        });
-
-    transition.selectAll("text")
-      .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
-        .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
-        .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
-        .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+  for (let i=0; i<artists.length;i++){
+    if (artists[i].tags_lastfm)
+    {
+      // console.log(artists[i].tags_lastfm.substring(0,artists[i].tags_lastfm.indexOf(';')));
+      if (!(artists[i].tags_lastfm.substring(0,artists[i].tags_lastfm.indexOf(';')) in artistGenre)){
+        artistGenre[artists[i].tags_lastfm.substring(0,artists[i].tags_lastfm.indexOf(';'))] = [artists[i].artist_mb];
+      }
+      else{
+        if (!(artistGenre[artists[i].tags_lastfm.substring(0,artists[i].tags_lastfm.indexOf(';'))].includes(artists[i].artist_mb)))
+        artistGenre[artists[i].tags_lastfm.substring(0,artists[i].tags_lastfm.indexOf(';'))].push(artists[i].artist_mb);
+      }
     }
-    
-    var circle = g.selectAll("circle")
-    .data(nodes)
-    .enter().append("circle")
-      .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
-      .style("fill", function(d) { return d.children ? color(d.depth) : null; })
-      // .on("click", function(d) { if (focus !== d) zoom(d), d3.event.sourceEvent.stopPropagation(); });
+  }
 
+  console.log(artistGenre);
+
+  function selectionChange()
+  {
+    imageContainerRef.current[0].innerHTML = "";
+    // console.log("FIRST", imageContainerRef.current[0]);
+    var a = document.getElementById('selectGenre').value
+      for (var i in artistGenre[a]){
+        var el = document.createElement("div");
+        el.textContent = artistGenre[a][i]
+        imageContainerRef.current[0].appendChild(el);
+      }
     
-    function zoomTo(v) {
-      var k = diameter / v[2]; view = v;
-      node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
-      circle.attr("r", function(d) { return d.r * k; });
+    console.log(imageContainerRef.current[0]);
+  }
+
+  useEffect(() => {
+    var sel = document.getElementById("selectGenre");
+    imageContainerRef.current = document.getElementsByClassName("imageContainer");
+    console.log(sel); 
+
+    for (var a in artistGenre){
+      try
+      {
+        var opt = a;
+        var el = document.createElement("option");
+        el.textContent = opt + "(" + artistGenre[a].length + ")";
+        el.value = opt;
+        sel.appendChild(el);
+      }
+      catch(err){
+        console.log(err);
+      }
     }
-
-    var text = g.selectAll("text")
-    .data(nodes)
-    .enter().append("text")
-      .attr("class", "label")
-      .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
-      .style("display", function(d) { return d.parent === root ? "inline" : "none"; })
-      .text(function(d) { return d.data.name; });
-
-    svg
-      .style("background", color(-1))
-      .on("click", function() { zoom(root); });
-
-    zoomTo([root.x, root.y, root.r * 2 + margin]);
-  
   });
 
   return (
     <div className="floatingImage">
       <h3>Floating Images chart here!</h3>
-      <svg id="chart" viewBox="-45 -10 550 250"> 
-      </svg>
+      <select id="selectGenre" onChange={selectionChange}>
+        <option>Choose a genre</option>
+      </select>
+      <div className="imageContainer">
+
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import './barChart.css';
 import data1 from '../data/first2000rows.json';
-import { useEffect, useState , useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   select,
   scaleBand,
@@ -41,15 +41,6 @@ function BarChart() {
       allData.push(b);
     }
   }
-
-  // const data = [
-  //   { name: 'Sun', value: 100 },
-  //   { name: 'Mon', value: 50 },
-  //   { name: 'Tue', value: 500 },
-  //   { name: 'Wed', value: 300 },
-  //   { name: 'Thu', value: 200 },
-  //   { name: 'Fri', value: 20 },
-  // ]
   
 
   useEffect(() => {

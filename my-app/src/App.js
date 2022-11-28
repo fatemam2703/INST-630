@@ -14,7 +14,7 @@ function App() {
       <div className="App-body">        
         <SimpleChart />   
         <BarChart />
-        {/* <FloatingImages /> */}
+        <FloatingImages />
       </div>
     </div>
     
