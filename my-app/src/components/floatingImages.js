@@ -90,7 +90,7 @@ function FloatingImages() {
   }
 
   async function getData(artist_name) {
-    const token = "BQANmwfkadtjO3_wcyO5GOpImq96deop8NRgWo7G0YT_djmCI7bfjPD5dc_TfDwx8fUSfC8-StHHDeVi87zjhP_zbYOUidm1HOop2IWTZzByS-9L5tdt--byVwum8O_UObbbu6rBS5mhxGo935zwE65ItQtu6ELaLAj4YjDhGUIJRE2QiviGj2JuoUobHLw";
+    const token = "BQDOhrvrerfFOVp_xY6DKEODVqiG_WfeEh9jI7rsNw6zPR7IytQelwf_vz9pqP3was5m7qus_-_FzX3X5dZVXlO3VWFnRkG1JqNIUwi9qUqhLhKWROosjLg57_to1TywB8tUGZ6y8OlMZsoYGzQGSv9eJFgLRCA9RAcyDdai1XA_N6A3yGB62-bTFK9pR1g";
     const data = await fetch('https://api.spotify.com/v1/search?q='+artist_name+'&type=artist', {
       method: "GET",
       headers: {"Authorization": `Bearer ${token}`}
@@ -129,6 +129,9 @@ function FloatingImages() {
         <select id="selectGenre" onChange={selectionChange}>
           <option>Choose a genre</option>
         </select>
+        <br></br>
+        <br></br>
+        <p id="text-para">Click on a bubble to play some music!</p>
         <br></br>
         <br></br>
         <div className="imageContainer">
