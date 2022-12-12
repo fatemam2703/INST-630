@@ -66,7 +66,7 @@ function BarChart() {
          .attr("y", function(d) { return yScale(d.value); })
          .attr("width", 15)
          .attr("height", function(d) { return height - yScale(d.value); })
-         .attr("fill","steelblue");
+         .attr("fill","#548DF7");
 
     // axes
     const xAxis = axisBottom(xScale);
@@ -89,38 +89,44 @@ function BarChart() {
     svg
       .append("text")
       .attr("x", (width / 2))             
-      .attr("y", (height / 15))
+      .attr("y", (height / 500))
       .attr("text-anchor", "middle")  
       .style("font-size", "10px") 
-      .text("Bands across Top Genres")
-      .attr('id','title');
+      .text("Artists across Top Genres")
+      .attr('id','title')
+      .style("fill","#548DF7")
+      .style("font-weight",500);
 
     svg.select('#xaxis-label').remove()
     svg
       .append("text")
       .attr("text-anchor", "end")
       .attr("x", width/2)
-      .attr("y", height+20)
+      .attr("y", height+25)
       .text("Genre")
       .attr('id','xaxis-label')
-      .style("font-size", "7px") ;
+      .style("font-size", "7px")
+      .style("fill","#548DF7") ;
 
     svg.select('#yaxis-label').remove()
     svg
       .append("text")
       .attr("text-anchor", "end")
-      .attr("x", 10)
+      .attr("x", -5)
       .attr("y", height/2)
-      .text("Number of Bands")
+      .text("Artists")
       .attr('id','yaxis-label')
-      .style("font-size", "7px");
+      .style("font-size", "7px")
+      .style("fill","#548DF7");
   });
 
   return (
     
     <div className="simpleBarChart">
-      <svg id="chart" ref={svgRef} viewBox="-45 -10 550 150">
-      </svg>
+      <div className='simpleChartContainer'>
+        <svg id="chart" ref={svgRef} viewBox="-30 -40 550 180">
+        </svg>
+      </div>
     </div>
   );
 }

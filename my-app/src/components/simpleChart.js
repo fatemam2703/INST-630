@@ -11,13 +11,17 @@ function SimpleChart() {
   const artistCountryCount = {};
 
   for (let i=0; i<artists.length;i++){
-    if (!(artists[i].country_mb in artistCountryCount) && artists[i].country_mb!=='undefined'){
-      artistCountryCount[artists[i].country_mb] = 1;
-      artistCountryBandNames[artists[i].country_mb] = [artists[i].artist_mb];
-    }
-    else{
-      artistCountryCount[artists[i].country_mb] += 1;
-      artistCountryBandNames[artists[i].country_mb].push(artists[i].artist_mb);
+    // console.log(artists[i].mbid, "-", artists[i].country_mb)
+    if (artists[i].country_mb!==undefined )
+    {
+      if (!(artists[i].country_mb in artistCountryCount)){
+        artistCountryCount[artists[i].country_mb] = 1;
+        artistCountryBandNames[artists[i].country_mb] = [artists[i].artist_mb];
+      }
+      else{
+        artistCountryCount[artists[i].country_mb] += 1;
+        artistCountryBandNames[artists[i].country_mb].push(artists[i].artist_mb);
+      }
     }
     // console.log(artists[i].tags_lastfm.substring(0,artists[i].tags_lastfm.indexOf(';')));
     // if (!(artists[i].tags_lastfm.substring(0,artists[i].tags_lastfm.indexOf(';')) in artistGenre)){
@@ -71,7 +75,6 @@ function SimpleChart() {
         .select('path')
         .attr('d', (value) => line(chartdata))
         .attr('fill','none')
-        .attr('stroke', 'black')
       
       const xAxis = d3.axisBottom(xScale)
       const yAxis = d3.axisLeft(yScale)
@@ -96,9 +99,12 @@ function SimpleChart() {
         .attr("x", (width / 2))             
         .attr("y", (height / 15))
         .attr("text-anchor", "middle")  
-        .style("font-size", "10px") 
+        .style("font-size", "10px")
+        .style("color","#E458A4") 
         .text("Music Production across Countries")
-        .attr('id','title');
+        .attr('id','title')
+        .style("fill","#548DF7")
+        .style("font-weight",500);
 
       d3.select('#xaxis-label').remove()
       d3.select(svgRef.current)
@@ -108,7 +114,8 @@ function SimpleChart() {
         .attr("y", height+5)
         .text("Countries")
         .attr('id','xaxis-label')
-        .style("font-size", "7px") ;
+        .style("font-size", "7px")
+        .style("fill","#548DF7");
 
       d3.select('#yaxis-label').remove()
       d3.select(svgRef.current)
@@ -116,9 +123,10 @@ function SimpleChart() {
         .attr("text-anchor", "end")
         .attr("x", 10)
         .attr("y", height/2)
-        .text("Number of Bands")
+        .text("Artists")
         .attr('id','yaxis-label')
-        .style("font-size", "7px");
+        .style("font-size", "7px")
+        .style("fill","#548DF7");
 
     },[chartdata]
   )
@@ -127,15 +135,11 @@ function SimpleChart() {
   return (
     <div className="simpleChart">
       {/* <h3>Line chart here!</h3> */}
-      <svg id="chart" ref={svgRef} viewBox="-45 -10 550 250">
-        <path d="" fill="none" stroke="black" strokeWidth="1" />   
-      </svg>
-      <p>
-        {/* Chart data - - {JSON.stringify(chartdata)} */}
-        {/* <button type='button' onClick={()=> setChartdata(newData())}>
-          
-        </button> */}
-      </p>
+      <div className='simpleChartContainer'>
+        <svg id="chart" ref={svgRef} viewBox="-20 -30 520 250">
+          <path d="" fill="none" stroke="#548DF7" strokeWidth="1" />   
+        </svg>
+      </div>
     </div>
   );
 }

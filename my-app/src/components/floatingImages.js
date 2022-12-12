@@ -9,6 +9,12 @@ function FloatingImages() {
 
   const imageContainerRef= useRef()
 
+  const artistListeners = {};
+
+  var minListen = Infinity;
+
+  var maxListen = -1;
+
   for (let i=0; i<artists.length;i++){
     if (artists[i].tags_lastfm)
     {
@@ -20,29 +26,84 @@ function FloatingImages() {
         if (!(artistGenre[artists[i].tags_lastfm.substring(0,artists[i].tags_lastfm.indexOf(';'))].includes(artists[i].artist_mb)))
         artistGenre[artists[i].tags_lastfm.substring(0,artists[i].tags_lastfm.indexOf(';'))].push(artists[i].artist_mb);
       }
+      artistListeners[artists[i].artist_mb] = Number(artists[i].listeners_lastfm)
+      // var artistListen = Number(artists[i].listeners_lastfm);
+      if (artistListeners[artists[i].artist_mb] > maxListen) { maxListen = artistListeners[artists[i].artist_mb]; }
+      if (artistListeners[artists[i].artist_mb] < minListen) { minListen = artistListeners[artists[i].artist_mb]; }
     }
   }
 
-  console.log(artistGenre);
+  // console.log(artistGenre);
+  // console.log(artistListeners);
+  // console.log(minListen,maxListen);
 
   function selectionChange()
   {
     imageContainerRef.current[0].innerHTML = "";
+    document.getElementById("my_frame").style.display = "none";
     // console.log("FIRST", imageContainerRef.current[0]);
-    var a = document.getElementById('selectGenre').value
+
+    var a = document.getElementById('selectGenre').value;
+    artistGenre[a].sort();
       for (var i in artistGenre[a]){
+        // console.log(artistGenre[a].);
+        imageContainerRef.current[0].style.setProperty('--grid-rows', artistGenre[a].length/6);
+        imageContainerRef.current[0].style.setProperty('--grid-cols', 6);
+        var size = artistListeners[artistGenre[a][i]]/(maxListen-minListen)*350;
+        // console.log(size.toString());
         var el = document.createElement("div");
-        el.textContent = artistGenre[a][i]
-        imageContainerRef.current[0].appendChild(el);
+        var ol = imageContainerRef.current[0].appendChild(el)
+        // console.log(ol);
+        ol.className = "grid-item";
+        ol.style.width = size.toString()+"px";
+        ol.style.height = size.toString()+"px";
+        // console.log(ol.style.width);
+        ol.textContent = artistGenre[a][i]
+        // console.log(iFrameDiv);
+        el.addEventListener("click", openIframe);
+
+        if(artistGenre[a][i]==="Coldplay"){
+          // el.addEventListener("click",openIframe);
+          el.style.backgroundImage = "url('https://i.scdn.co/image/ab67706f00000003a231f671c289555cfd09f716')";
+          el.style.backgroundPosition = "center";
+          el.style.backgroundSize = "cover";
+        }
+        // imageContainerRef.current[0].appendChild(el);
       }
     
-    console.log(imageContainerRef.current[0]);
+    // console.log(imageContainerRef.current[0]);
+    // makeRows(artistGenre.length,7);
+
+    // getData("YFoolâ€™s Garden");
+
+  }
+
+  async function openIframe(){
+    console.log("hi",this.textContent);
+    const id = await getData(this.textContent);
+    var iFrameDiv = document.getElementById("my_iframe");
+    iFrameDiv.src = "https://open.spotify.com/embed/artist/"+id+"?utm_source=generator";
+    var el = document.getElementById("my_frame");
+    el.style.display = "inline";
+    console.log(el.style.display);
+    window.scrollTo(0, document.body.scrollHeight)
+  }
+
+  async function getData(artist_name) {
+    const token = "BQANmwfkadtjO3_wcyO5GOpImq96deop8NRgWo7G0YT_djmCI7bfjPD5dc_TfDwx8fUSfC8-StHHDeVi87zjhP_zbYOUidm1HOop2IWTZzByS-9L5tdt--byVwum8O_UObbbu6rBS5mhxGo935zwE65ItQtu6ELaLAj4YjDhGUIJRE2QiviGj2JuoUobHLw";
+    const data = await fetch('https://api.spotify.com/v1/search?q='+artist_name+'&type=artist', {
+      method: "GET",
+      headers: {"Authorization": `Bearer ${token}`}
+    })
+    const json = await data.json();
+    console.log(json.artists.items[0].id, json.artists.items[0].name);
+    return (json.artists.items[0].id)
   }
 
   useEffect(() => {
     var sel = document.getElementById("selectGenre");
     imageContainerRef.current = document.getElementsByClassName("imageContainer");
-    console.log(sel); 
+    // console.log(sel); 
 
     for (var a in artistGenre){
       try
@@ -61,12 +122,22 @@ function FloatingImages() {
 
   return (
     <div className="floatingImage">
-      <h3>Floating Images chart here!</h3>
-      <select id="selectGenre" onChange={selectionChange}>
-        <option>Choose a genre</option>
-      </select>
-      <div className="imageContainer">
+      <div className='simpleChartContainer'>
+        <div className="title-header">
+          <h3>Find Top Artists across Genres</h3>
+        </div>
+        <select id="selectGenre" onChange={selectionChange}>
+          <option>Choose a genre</option>
+        </select>
+        <br></br>
+        <br></br>
+        <div className="imageContainer">
 
+        </div>
+        <br></br>
+        <div id="my_frame">
+          <iframe title ="my_frame" id="my_iframe" src="https://open.spotify.com/embed/artist/4gzpq5DPGxSnKTe4SA8HAU?utm_source=generator" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
       </div>
     </div>
   );

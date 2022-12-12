@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        Music Visualization
+        <h4>Artists Dataset Visualization from Last.FM</h4>
       </header>
       <div className="App-body">        
         <SimpleChart />   

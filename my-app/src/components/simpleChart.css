@@ -1,7 +1,19 @@
 #xaxis { 
     font: 4px sans-serif; 
+    color: #E458A4;
 }
 
 #yaxis { 
     font: 4px sans-serif; 
+    color: #E458A4;
+}
+
+.simpleChartContainer{
+    /* background-color:  #ffffff; */
+    margin: 20px 10px;
+    /* opacity: 0.1; */
+    border-color:  #ba4587;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 10px;
 }
